@@ -180,7 +180,7 @@ $destPrefix | ForEach-Object ( $_ ) {
     }
     else {
         #If it exists then no command is required
-        $Command = "N/A"
+        
     }
     
     #Create a new row in table
@@ -209,11 +209,11 @@ switch ($mode) {
     "auto" {
         $SubNetTable | Format-Table
         #If auto create intranet apps that dont exist and bind to binding object
-        write-host "Creating Intranet Apps!" -ForegroundColor Yellow
+        Write-Output "Creating Intranet Apps!" -ForegroundColor Yellow
         foreach ($newIA in $SubNetTable | Where-Object { $_.Exists -eq $false }) {
             #Automatically create intranet applications
             #Buiid intranet app payload
-            Write-Host $newIA.IAname
+            Write-Output $newIA.IAname
             $payload = @{
                 
                 "vpnintranetapplication" = @{
@@ -227,7 +227,7 @@ switch ($mode) {
                 }
             }   
             #Create intranet app
-            Write-Host "Creating"$newIA.IAname
+            write-output "Creating"$newIA.IAname
             Invoke-RestMethod -Uri  $NSIPProtocol"://"$NSIP"/nitro/v1/config/vpnintranetapplication" -Method POST -Body ($payload | ConvertTo-Json )  -WebSession $Session -Headers @{"Content-Type" = "application/json" }
             
             #Bind Intranet App to object
@@ -236,7 +236,7 @@ switch ($mode) {
             switch($BindingType) {
             
                 "Group" {
-                    write-host "Binding "$newIA.IAname" to "$BindingType" "$BindingObject
+                    write-output "Binding "$newIA.IAname" to "$BindingType" "$BindingObject
                     $payload = @{
                         "aaagroup_vpnintranetapplication_binding"=@{
                         "groupname" = $BindingObject;
@@ -246,8 +246,8 @@ switch ($mode) {
                         Invoke-RestMethod -Uri  $NSIPProtocol"://"$NSIP"/nitro/v1/config/aaagroup_vpnintranetapplication_binding" -Method PUT -Body ($payload | ConvertTo-Json ) -WebSession $Session -Headers @{"Content-Type"="application/json"}
                     }
                 "VServer" {
-                    write-host "Binding "$newIA.IAname" to "$BindingType" "$BindingObject
-                    payload = @{
+                    write-output "Binding "$newIA.IAname" to "$BindingType" "$BindingObject
+                    $payload = @{
                         "vpnvserver_vpnintranetapplication_binding" = @{
                             "name"                = $BindingObject;
                             "intranetapplication" = $newIA.ianame;
@@ -256,12 +256,9 @@ switch ($mode) {
                     Invoke-RestMethod -Uri  $NSIPProtocol"://"$NSIP"/nitro/v1/config/vpnvserver_vpnintranetapplication_bindingg" -Method PUT -Body ($payload | ConvertTo-Json ) -WebSession $Session -Headers @{"Content-Type" = "application/json" }         
                 }
                 default {
-                    write-host "No Binding Stype has been specified. Intranet Apps will need to be bound manually."
+                    write-output "No Binding type has been specified. Intranet Apps will need to be bound manually."
                 }
             }
         }
     }
 }
-
-
-
