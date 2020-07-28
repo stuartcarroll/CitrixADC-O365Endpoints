@@ -1,7 +1,7 @@
 # CitrixADC-O365Endpoints
 Get O365 Endpoint subnets from Microsoft endpoint JSON feed and create/bind Citrix ADC (NetScaler) Intranet Applications  
 
-For use when using Citrix Gateway reverse split tunneling
+For use when using Citrix Gateway reverse split tunneling to ensure Micrsoft Office 365 traffic is not routed over the Citrix Gateway VPN tunnel as per Microsoft communication best practises.
 
 Depending on Mode:
     info: Output information on the required intranet apps and compare to existing inranet apps.
