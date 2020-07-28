@@ -253,7 +253,7 @@ switch ($mode) {
                             "intranetapplication" = $newIA.ianame;
                         }
                     }
-                    Invoke-RestMethod -Uri  $NSIPProtocol"://"$NSIP"/nitro/v1/config/vpnvserver_vpnintranetapplication_bindingg" -Method PUT -Body ($payload | ConvertTo-Json ) -WebSession $Session -Headers @{"Content-Type" = "application/json" }         
+                    Invoke-RestMethod -Uri  $NSIPProtocol"://"$NSIP"/nitro/v1/config/vpnvserver_vpnintranetapplication_binding" -Method PUT -Body ($payload | ConvertTo-Json ) -WebSession $Session -Headers @{"Content-Type" = "application/json" }         
                 }
                 default {
                     write-output "No Binding type has been specified. Intranet Apps will need to be bound manually."
